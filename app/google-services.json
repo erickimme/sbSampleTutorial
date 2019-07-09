@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "142443103312",
+    "firebase_url": "https://sendbirdandroidsampletutorial.firebaseio.com",
+    "project_id": "sendbirdandroidsampletutorial",
+    "storage_bucket": "sendbirdandroidsampletutorial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142443103312:android:f54c6af65b9c7f2f",
+        "android_client_info": {
+          "package_name": "com.example.sbandroidsampleapptutorial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142443103312-nu6ehl95e3ih3gdm3canlp62r4830mld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLtMe3RpIlcgblIOiOJxmvTggtnO9TyDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142443103312-nu6ehl95e3ih3gdm3canlp62r4830mld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
