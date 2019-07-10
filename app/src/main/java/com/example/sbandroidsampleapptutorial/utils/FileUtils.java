@@ -8,14 +8,20 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import com.example.sbandroidsampleapptutorial.R;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +44,7 @@ public class FileUtils {
 
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.P)
     public static Hashtable<String, Object> getFileInfo(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -159,21 +165,35 @@ public class FileUtils {
                 Hashtable<String, Object> value = getDataColumn(context, uri, null, null);
                 Bitmap bitmap;
                 try {
-                    // image
                     InputStream input = context.getContentResolver().openInputStream(uri);
-                    bitmap = BitmapFactory.decodeStream(input);
-                    File file = File.createTempFile("sendbird", ".jpg");
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, new BufferedOutputStream(new FileOutputStream(file)));
+                    // image
+                    if (value.get("mime").toString().contains("jpeg")){
+                        bitmap = BitmapFactory.decodeStream(input);
+                        File file = File.createTempFile("sendbird", ".jpg");
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, new BufferedOutputStream(new FileOutputStream(file)));
+                        //value inputting
+                        value.put("path", file.getAbsolutePath());
+                        value.put("size", (int)file.length());
+                    }
 
                     //TODO : GIF handling
-//                    InputStream input_gif = context.getContentResolver().openInputStream(uri);
-//                    bitmap = BitmapFactory.decodeStream(input);
-//                    File file_gif = File.createTempFile("sendbird", ".gif");
-//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, new BufferedOutputStream(new FileOutputStream(file)));
+                    else if (value.get("mime").toString().contains("gif")){
+                        File file = File.createTempFile("sendbird_gif", "gif");
+                        BufferedInputStream bis = new BufferedInputStream(input);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        int current = 0;
+                        while ((current = bis.read()) != -1){
+                            baos.write(current);
+                        }
+                        FileOutputStream fos = new FileOutputStream(file);
+                        fos.write(baos.toByteArray());
+                        fos.flush();
+                        fos.close();
+                        //value inputting
+                        value.put("path", file.getAbsolutePath());
+                        value.put("size", (int)file.length());
+                    }
 
-                    //value inputting
-                    value.put("path", file.getAbsolutePath());
-                    value.put("size", (int)file.length());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

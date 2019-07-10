@@ -140,7 +140,7 @@ public class ImageUtils {
      */
     public static void displayGifImageFromUrl(Context context, String url, ImageView imageView, Drawable placeholderDrawable, RequestListener listener) {
         RequestOptions myOptions = new RequestOptions()
-                .dontAnimate()
+//                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .placeholder(placeholderDrawable);
 
@@ -165,7 +165,7 @@ public class ImageUtils {
      */
     public static void displayGifImageFromUrl(Context context, String url, ImageView imageView, String thumbnailUrl, Drawable placeholderDrawable) {
         RequestOptions myOptions = new RequestOptions()
-                .dontAnimate()
+//                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .placeholder(placeholderDrawable);
 
