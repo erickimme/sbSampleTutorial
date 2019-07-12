@@ -24,7 +24,7 @@ The following **required** functionality is completed:
 Here's a walkthrough of implemented user stories:
 
 GIF Walkthrough
-<img src='https://i.imgur.com/CxQBGVm.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/erickimme/sbSampleTutorial/blob/master/SendBird_gif_demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 GIF created with [Droplr](https://droplr.com/).
