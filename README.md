@@ -25,7 +25,7 @@ Here's a walkthrough of implemented user stories:
 
 GIF Walkthrough
 <img src='https://i.imgur.com/CxQBGVm.gifv' title='Gif Walkthrough' width='' alt='Video Walkthrough' />
-
+[Imgur](https://i.imgur.com/CxQBGVm.gifv)
 GIF created with [Droplr](https://droplr.com/).
 
 ## Notes
