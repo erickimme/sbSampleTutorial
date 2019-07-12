@@ -17,16 +17,15 @@ The following **required** functionality is completed:
 - [x] User can send/receive fileMessage(Video)
 - [x] User can send/receive fileMessage(Audio)
 - [x] User can receive Push notification when application is on background or user is in a different channel
-- [ ] User can send/receive fileMessage(Gif)
+- [x] User can send/receive fileMessage(Gif)
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-*Currently filming
 
+GIF Walkthrough
+<img src='https://i.imgur.com/CxQBGVm.gif' title='Gif Walkthrough' width='' alt='Video Walkthrough' />
 
-<img src='https://i.imgur.com/.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+GIF created with [Droplr](https://droplr.com/).
 
 ## Notes
