@@ -24,8 +24,9 @@ The following **required** functionality is completed:
 Here's a walkthrough of implemented user stories:
 
 GIF Walkthrough
-<img src='https://i.imgur.com/CxQBGVm.gifv' title='Gif Walkthrough' width='' alt='Video Walkthrough' />
-[Imgur](https://i.imgur.com/CxQBGVm.gifv)
+<img src='https://i.imgur.com/47M4lAq.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+
 GIF created with [Droplr](https://droplr.com/).
 
 ## Notes
