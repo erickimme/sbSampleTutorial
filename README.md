@@ -17,7 +17,8 @@ The following **required** functionality is completed:
 - [x] User can send/receive fileMessage(Video)
 - [x] User can send/receive fileMessage(Audio)
 - [x] User can receive Push notification when application is on background or user is in a different channel
-- [x] User can send/receive fileMessage(Gif)
+- [x] User can send/receive fileMessage(GIF)
+- [x] User can send URL with URL preview(Map, Website Link, etc)
 
 ## Video Walkthrough
 
