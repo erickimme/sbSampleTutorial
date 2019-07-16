@@ -1,14 +1,20 @@
 package com.example.sbandroidsampleapptutorial.groupchannel;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.example.sbandroidsampleapptutorial.R;
@@ -64,6 +70,7 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private boolean mIsMessageListLoading;
 
     interface OnItemLongClickListener {
+
         void onUserMessageItemLongClick(UserMessage message, int position);
 
         void onFileMessageItemLongClick(FileMessage message);
@@ -191,13 +198,19 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         .inflate(R.layout.list_item_group_chat_file_image_other, parent, false);
                 return new OtherImageFileMessageHolder(otherImageFileMsgView);
             case VIEW_TYPE_FILE_MESSAGE_VIDEO_ME:
+//                View myVideoFileMsgView = LayoutInflater.from(parent.getContext())
+//                        .inflate(R.layout.list_item_group_chat_file_video_me, parent, false);
+//                return new MyVideoFileMessageHolder(myVideoFileMsgView);
                 View myVideoFileMsgView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.list_item_group_chat_file_video_me, parent, false);
-                return new MyVideoFileMessageHolder(myVideoFileMsgView);
+                        .inflate(R.layout.list_item_group_chat_file_videoplayer_me, parent, false);
+                return new MyVideoPlayerFileMessageHolder(myVideoFileMsgView);
             case VIEW_TYPE_FILE_MESSAGE_VIDEO_OTHER:
+//                View otherVideoFileMsgView = LayoutInflater.from(parent.getContext())
+//                        .inflate(R.layout.list_item_group_chat_file_video_other, parent, false);
+//                return new OtherVideoFileMessageHolder(otherVideoFileMsgView);
                 View otherVideoFileMsgView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.list_item_group_chat_file_video_other, parent, false);
-                return new OtherVideoFileMessageHolder(otherVideoFileMsgView);
+                        .inflate(R.layout.list_item_group_chat_file_videoplayer_other, parent, false);
+                return new OtherVideoPlayerFileMessageHolder(otherVideoFileMsgView);
 
             default:
                 return null;
@@ -261,10 +274,12 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((OtherImageFileMessageHolder) holder).bind(mContext, (FileMessage) message, mChannel, isNewDay, isContinuous, mItemClickListener);
                 break;
             case VIEW_TYPE_FILE_MESSAGE_VIDEO_ME:
-                ((MyVideoFileMessageHolder) holder).bind(mContext, (FileMessage) message, mChannel, isNewDay, isTempMessage, isFailedMessage, tempFileMessageUri, mItemClickListener);
+//                ((MyVideoFileMessageHolder) holder).bind(mContext, (FileMessage) message, mChannel, isNewDay, isTempMessage, isFailedMessage, tempFileMessageUri, mItemClickListener);
+                ((MyVideoPlayerFileMessageHolder) holder).bind(mContext, (FileMessage) message, mChannel, isNewDay, isTempMessage, isFailedMessage, tempFileMessageUri, mItemClickListener, mItemLongClickListener);
                 break;
             case VIEW_TYPE_FILE_MESSAGE_VIDEO_OTHER:
-                ((OtherVideoFileMessageHolder) holder).bind(mContext, (FileMessage) message, mChannel, isNewDay, isContinuous, mItemClickListener);
+//                ((OtherVideoFileMessageHolder) holder).bind(mContext, (FileMessage) message, mChannel, isNewDay, isContinuous, mItemClickListener);
+                ((OtherVideoPlayerFileMessageHolder) holder).bind(mContext, (FileMessage) message, mChannel, isNewDay, isContinuous, mItemClickListener, mItemLongClickListener);
                 break;
             default:
                 break;
@@ -1285,6 +1300,215 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onClick(View v) {
                         listener.onFileMessageItemClick(message);
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * A ViewHolder for file messages that are videos.
+     * Displays only the video thumbnail.
+     */
+    private class MyVideoPlayerFileMessageHolder extends RecyclerView.ViewHolder {
+        TextView timeText, readReceiptText, dateText;
+        ImageView fileThumbnailImage;
+        CircleProgressBar circleProgressBar;
+        VideoView videoView;
+        MediaController ctlr;
+
+
+        public MyVideoPlayerFileMessageHolder(View itemView) {
+            super(itemView);
+
+            timeText = (TextView) itemView.findViewById(R.id.text_group_chat_time);
+            fileThumbnailImage = (ImageView) itemView.findViewById(R.id.image_group_chat_file_thumbnail);
+            videoView = (VideoView) itemView.findViewById(R.id.video_group_chat_file_videoplayer);
+            readReceiptText = (TextView) itemView.findViewById(R.id.text_group_chat_read_receipt);
+            circleProgressBar = (CircleProgressBar) itemView.findViewById(R.id.circle_progress);
+            dateText = (TextView) itemView.findViewById(R.id.text_group_chat_date);
+        }
+
+        void bind(Context context, final FileMessage message, GroupChannel channel, boolean isNewDay, boolean isTempMessage, boolean isFailedMessage, Uri tempFileMessageUri, final OnItemClickListener listener, final OnItemLongClickListener longClickListener) {
+            timeText.setText(DateUtils.formatTime(message.getCreatedAt()));
+
+            if (isFailedMessage) {
+                readReceiptText.setText(R.string.message_failed);
+                readReceiptText.setVisibility(View.VISIBLE);
+
+                circleProgressBar.setVisibility(View.GONE);
+                mFileMessageMap.remove(message);
+            } else if (isTempMessage) {
+                readReceiptText.setText(R.string.message_sending);
+                readReceiptText.setVisibility(View.GONE);
+
+                circleProgressBar.setVisibility(View.VISIBLE);
+                mFileMessageMap.put(message, circleProgressBar);
+            } else {
+                circleProgressBar.setVisibility(View.GONE);
+                mFileMessageMap.remove(message);
+
+                // Since setChannel is set slightly after adapter is created, check if null.
+                if (channel != null) {
+                    int readReceipt = channel.getReadReceipt(message);
+                    if (readReceipt > 0) {
+                        readReceiptText.setVisibility(View.VISIBLE);
+                        readReceiptText.setText(String.valueOf(readReceipt));
+                    } else {
+                        readReceiptText.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+
+            // Show the date if the message was sent on a different date than the previous message.
+            if (isNewDay) {
+                dateText.setVisibility(View.VISIBLE);
+                dateText.setText(DateUtils.formatDate(message.getCreatedAt()));
+            } else {
+                dateText.setVisibility(View.GONE);
+            }
+
+            if (isTempMessage && tempFileMessageUri != null) {
+                videoView.setVideoPath(tempFileMessageUri.toString());
+
+                ctlr = new MediaController(context);
+                ctlr.setMediaPlayer(videoView);
+
+                videoView.setMediaController(ctlr);
+                videoView.requestFocus();
+                videoView.start();
+
+                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        videoView.start();
+                    }
+                });
+
+                videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    public void onCompletion(MediaPlayer mp) {
+                        videoView.start();
+
+                    }
+                });
+            }
+
+
+            if (listener != null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onFileMessageItemClick(message);
+                    }
+                });
+            }
+
+            if (longClickListener != null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        longClickListener.onFileMessageItemLongClick(message);
+                        return true;
+                    }
+                });
+            }
+        }
+    }
+
+    private class OtherVideoPlayerFileMessageHolder extends RecyclerView.ViewHolder {
+
+        TextView timeText, nicknameText, readReceiptText, dateText;
+        ImageView profileImage, fileThumbnailImage;
+        VideoView videoView;
+        MediaController ctlr;
+
+        public OtherVideoPlayerFileMessageHolder(View itemView) {
+            super(itemView);
+
+            timeText = (TextView) itemView.findViewById(R.id.text_group_chat_time);
+            nicknameText = (TextView) itemView.findViewById(R.id.text_group_chat_nickname);
+            fileThumbnailImage = (ImageView) itemView.findViewById(R.id.image_group_chat_file_thumbnail);
+            videoView = (VideoView) itemView.findViewById(R.id.video_group_chat_file_videoplayer);
+            profileImage = (ImageView) itemView.findViewById(R.id.image_group_chat_profile);
+            readReceiptText = (TextView) itemView.findViewById(R.id.text_group_chat_read_receipt);
+            dateText = (TextView) itemView.findViewById(R.id.text_group_chat_date);
+        }
+
+        void bind(Context context, final FileMessage message, GroupChannel channel, boolean isNewDay, boolean isContinuous, final OnItemClickListener listener, final OnItemLongClickListener longClickListener) {
+            timeText.setText(DateUtils.formatTime(message.getCreatedAt()));
+
+            // Since setChannel is set slightly after adapter is created, check if null.
+            if (channel != null) {
+                int readReceipt = channel.getReadReceipt(message);
+                if (readReceipt > 0) {
+                    readReceiptText.setVisibility(View.VISIBLE);
+                    readReceiptText.setText(String.valueOf(readReceipt));
+                } else {
+                    readReceiptText.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            // Show the date if the message was sent on a different date than the previous message.
+            if (isNewDay) {
+                dateText.setVisibility(View.VISIBLE);
+                dateText.setText(DateUtils.formatDate(message.getCreatedAt()));
+            } else {
+                dateText.setVisibility(View.GONE);
+            }
+
+            // Hide profile image and nickname if the previous message was also sent by current sender.
+            if (isContinuous) {
+                profileImage.setVisibility(View.INVISIBLE);
+                nicknameText.setVisibility(View.GONE);
+            } else {
+                profileImage.setVisibility(View.VISIBLE);
+                ImageUtils.displayRoundImageFromUrl(context, message.getSender().getProfileUrl(), profileImage);
+
+                nicknameText.setVisibility(View.VISIBLE);
+                nicknameText.setText(message.getSender().getNickname());
+            }
+
+
+            videoView.setVideoPath(message.getUrl().toString());
+
+            ctlr = new MediaController(context);
+            ctlr.setMediaPlayer(videoView);
+
+            videoView.setMediaController(ctlr);
+            videoView.requestFocus();
+            videoView.start();
+
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    videoView.start();
+                }
+            });
+
+            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+                    videoView.start();
+
+                }
+            });
+
+
+
+            if (listener != null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onFileMessageItemClick(message);
+                    }
+                });
+            }
+
+            if (longClickListener != null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        longClickListener.onFileMessageItemLongClick(message);
+                        return true;
                     }
                 });
             }

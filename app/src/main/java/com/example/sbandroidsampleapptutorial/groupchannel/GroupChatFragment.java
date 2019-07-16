@@ -479,6 +479,7 @@ public class GroupChatFragment extends Fragment {
 
                 onFileMessageClicked(message);
             }
+
         });
 
         mChatAdapter.setItemLongClickListener(new GroupChatAdapter.OnItemLongClickListener() {
@@ -681,6 +682,36 @@ public class GroupChatFragment extends Fragment {
     }
 
     private void onFileMessageClicked(FileMessage message) {
+        String type = message.getType().toLowerCase();
+        if (type.startsWith("image")) {
+            Intent i = new Intent(getActivity(), PhotoViewerActivity.class);
+            i.putExtra("url", message.getUrl());
+            i.putExtra("type", message.getType());
+            startActivity(i);
+        } else if (type.startsWith("video")) {
+            Intent intent = new Intent(getActivity(), MediaPlayerActivity.class);
+            intent.putExtra("url", message.getUrl());
+            startActivity(intent);
+        } else {
+            showDownloadConfirmDialog(message);
+        }
+    }
+//
+//    private void onFileVideoMessageClicked(FileMessage message) {
+//        String type = message.getType().toLowerCase();
+//        if (type.startsWith("image")) {
+//            Intent i = new Intent(getActivity(), PhotoViewerActivity.class);
+//            i.putExtra("url", message.getUrl());
+//            i.putExtra("type", message.getType());
+//            startActivity(i);
+//        } else if (type.startsWith("video")) {
+//            return;
+//        } else {
+//            showDownloadConfirmDialog(message);
+//        }
+//    }
+
+    private void onFileMessageLongClicked(FileMessage message) {
         String type = message.getType().toLowerCase();
         if (type.startsWith("image")) {
             Intent i = new Intent(getActivity(), PhotoViewerActivity.class);
