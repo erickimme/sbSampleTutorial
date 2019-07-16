@@ -47,6 +47,7 @@ import android.widget.Toast;
 import com.example.sbandroidsampleapptutorial.R;
 import com.example.sbandroidsampleapptutorial.main.ConnectionManager;
 import com.example.sbandroidsampleapptutorial.utils.FileUtils;
+import com.example.sbandroidsampleapptutorial.utils.MediaPlayerActivity;
 import com.example.sbandroidsampleapptutorial.utils.PhotoViewerActivity;
 import com.example.sbandroidsampleapptutorial.utils.PreferenceUtils;
 import com.example.sbandroidsampleapptutorial.utils.TextUtils;
@@ -450,7 +451,7 @@ public class GroupChatFragment extends Fragment {
                     return;
                 }
 
-
+                // open in browser
                 if (message.getCustomType().equals(GroupChatAdapter.URL_PREVIEW_CUSTOM_TYPE)) {
                     try {
                         UrlPreviewInfo info = new UrlPreviewInfo(message.getData());
@@ -686,10 +687,10 @@ public class GroupChatFragment extends Fragment {
             i.putExtra("url", message.getUrl());
             i.putExtra("type", message.getType());
             startActivity(i);
-//        } else if (type.startsWith("video")) {
-////            Intent intent = new Intent(getActivity(), MediaPlayerActivity.class);
-//            intent.putExtra("url", message.getUrl());
-//            startActivity(intent);
+        } else if (type.startsWith("video")) {
+            Intent intent = new Intent(getActivity(), MediaPlayerActivity.class);
+            intent.putExtra("url", message.getUrl());
+            startActivity(intent);
         } else {
             showDownloadConfirmDialog(message);
         }

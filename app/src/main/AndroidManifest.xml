@@ -47,6 +47,11 @@
             android:label="PhotoViewerActivity">
         </activity>
 
+        <activity
+            android:name=".utils.MediaPlayerActivity"
+            android:label="MediaPlayerActivity">
+        </activity>
+
         <service
             android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
