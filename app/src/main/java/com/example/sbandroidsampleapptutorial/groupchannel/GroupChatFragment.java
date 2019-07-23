@@ -642,11 +642,14 @@ public class GroupChatFragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 intent.setType("*/*");
                 String[] mimeTypes = {"image/*", "video/*"};
+
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
             } else {
                 intent.setType("image/* video/*");
             }
 
+            /*todo : finish rendering the multiple photo*/
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             intent.setAction(Intent.ACTION_GET_CONTENT);
 
             // Always show the chooser (if there are multiple options available)

@@ -78,62 +78,6 @@ public class FileUtils {
             }
             else if (isDocStorageType(uri)){
                     // Todo
-//                final String id = DocumentsContract.getDocumentId(uri);
-//                InputStream is = null;
-//                is = context.getContentResolver().openInputStream(uri);
-//                Bitmap bmp = BitmapFactory.decodeStream(is);
-//                return writeToTempImageAndGetPathUri(context, bmp).toString();
-
-
-//                String wholeID = DocumentsContract.getDocumentId(uri);
-//
-//                // Split at colon, use second item in the array
-////                String id = wholeID.split(":")[1];
-////                String[] column = { MediaStore.Images.Media.DATA };
-////                // where id is equal to
-////                String sel = MediaStore.Images.Media._ID + "=?";
-////
-////                Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{ id }, null);
-////
-////                String filePath1 = "";
-////                int columnIndex = cursor.getColumnIndex(column[0]);
-////
-////                if (cursor.moveToFirst()) {
-////                    filePath1 = cursor.getString(columnIndex);
-////                }
-////                cursor.close();
-//
-//
-//                final String docId = DocumentsContract.getDocumentId(uri);
-//                final String[] split = docId.split(":");
-//                final String type = split[0];
-//                final String selection = "_id=?";
-//                final String[] selectionArgs = new String[] {
-//                        split[1]
-//                };
-//
-//                Uri contentUri = null;
-//                if ("content".equals(type)){
-//                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-//                }
-//                return getDataColumn(context, contentUri, selection, selectionArgs);
-//
-
-//                Hashtable<String, Object> value = getDataColumn(context, uri, null, null);
-//                Bitmap bitmap;
-//
-//                Uri sArtworkUri = Uri.parse(uri.toString());
-//                try {
-//                    InputStream input = context.getContentResolver().openInputStream(sArtworkUri);
-//                    bitmap = BitmapFactory.decodeStream(input);
-//                    File file = File.createTempFile("sendbird", ".jpg");
-//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, new BufferedOutputStream(new FileOutputStream(file)));
-//                    value.put("path", filePath1);
-//                    value.put("size", (int)file.length());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                return value;
             }
 
             // MediaProvider
