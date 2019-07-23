@@ -36,6 +36,7 @@ InChat Video Walkthrough
 
 
 Sending non-collaged FileMessages
+
 <img src='https://github.com/erickimme/sbSampleTutorial/blob/master/SendBird_sending non-collaged_filemessages_demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
