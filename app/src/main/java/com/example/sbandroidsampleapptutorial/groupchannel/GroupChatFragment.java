@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -416,8 +417,12 @@ public class GroupChatFragment extends Fragment {
                 Log.d(LOG_TAG, "data is null!");
                 return;
             }
-
-            sendFileWithThumbnail(data.getData());
+            Log.e("TEST", data.toString());
+            Log.e("test.getData()", data.getData().toString());
+            for (int i =0; i< data.getClipData().getItemCount(); i++){
+                sendFileWithThumbnail(data.getClipData().getItemAt(i).getUri());
+            }
+            //sendFileWithThumbnail(data.getData());
         }
     }
 
