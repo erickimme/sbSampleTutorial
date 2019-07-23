@@ -20,6 +20,8 @@ The following **required** functionality is completed:
 - [x] User can send/receive FileMessage(GIF)
 - [x] User can send URL with URL preview(Map, Website Link, etc)
 - [x] User can send/receive InChat Video FileMessage
+- [x] User can send non-collaged FileMessages
+
 
 ## Video Walkthrough
 
@@ -31,6 +33,10 @@ GIF Walkthrough
 
 InChat Video Walkthrough
 <img src='https://github.com/erickimme/sbSampleTutorial/blob/master/SendBird_InChat_Video_Demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+
+Sending non-collaged FileMessages
+<img src='https://github.com/erickimme/sbSampleTutorial/blob/master/SendBird_sending non-collaged_filemessages_demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 GIF created with [Droplr](https://droplr.com/).
