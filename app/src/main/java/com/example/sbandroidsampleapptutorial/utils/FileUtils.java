@@ -120,7 +120,7 @@ public class FileUtils {
                         value.put("size", (int)file.length());
                     }
 
-                    //TODO : GIF handling
+                    // GIF handling
                     else if (value.get("mime").toString().contains("gif")){
                         File file = File.createTempFile("sendbird_gif", "gif");
                         BufferedInputStream bis = new BufferedInputStream(input);
